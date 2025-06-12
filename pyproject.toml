@@ -1,0 +1,25 @@
+[project]
+name = "gamelauncher"
+version = "0.1.0"
+description = "Simple launcher for Windows."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pywin32"
+]
+license = { text = "GPL-3.0-or-later" }
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: Microsoft :: Windows",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+]
+
+[project.scripts]
+gamelauncher = "gamelauncher.init:main"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
