@@ -1,0 +1,58 @@
+name: Build and upload
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+
+      - name: Install astral-sh's uv
+        uses: astral-sh/setup-uv@v1
+
+      - name: Install build tool
+        run: uv pip install --system build
+
+      - name: Build package
+        run: python -m build
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist_files
+          path: |
+            dist/*.tar.gz
+            dist/*.whl
+  upload:
+    needs: build
+    runs-on: windows-latest
+    if: ${{ needs.build.result == 'success' }} and github.ref_type == 'tag'
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist_files
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            *.tar.gz
+            *.whl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
