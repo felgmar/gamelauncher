@@ -26,4 +26,7 @@ if __name__ == "__main__":
     if not platform.get() == "linux":
         raise RuntimeError("Your platform is not supported:", CURRENT_PLATFORM)
 
-    main()
+    try:
+        main()
+    except Exception as e:
+        raise e
