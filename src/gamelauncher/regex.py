@@ -21,4 +21,3 @@ def __get_guid_pattern() -> re.Pattern[str]:
 
 def get_guid_pattern() -> re.Pattern[str]:
     return __get_guid_pattern()
-g
