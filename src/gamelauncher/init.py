@@ -1,9 +1,17 @@
+"""
+The main module for the gamelauncher.
+Where it gets initialized and run.
+"""
+
 from gamelauncher import platform
 from gamelauncher import args as arguments
 from gamelauncher import power_management
 from gamelauncher import process
 
 def main():
+    """
+    Initializes and runs the main entry point of the application.
+    """
     try:
         args, unknown_args = arguments.init()
         if not unknown_args:
