@@ -17,10 +17,15 @@ def main():
         if not unknown_args:
             raise ValueError("No command to run.")
 
-        if not args.power_scheme or not args.power_scheme == "Balanced":
-            power_management.change_power_scheme(args.power_scheme)
+        available_power_schemes: dict[str, str] = power_management.get_power_schemes()
+
+        if not args.power_scheme:
+            if available_power_schemes["Ultimate performance"]:
+                power_management.change_power_scheme("Ultimate performance")
+            else:
+                power_management.change_power_scheme("Balanced")
         else:
-            power_management.change_power_scheme("High performance")
+            power_management.change_power_scheme(args.power_scheme)
 
         process.run(unknown_args)
 

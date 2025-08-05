@@ -9,7 +9,7 @@ import argparse
 
 from gamelauncher import power_management
 
-def sanitize_arguments(path: str) -> str:
+def __sanitize_arguments(path: str) -> str:
     """
     Handles arguments and sanitizes them.
     Returns:
@@ -29,14 +29,13 @@ def init() -> tuple[argparse.Namespace, list[str]]:
     argparser = argparse.ArgumentParser()
 
     try:
-        available_power_schemes: dict[str, str] = power_management.__get_available_power_schemes()
+        available_power_schemes: dict[str, str] = power_management.get_power_schemes()
         argparser.add_argument("-p",
-                            "--power-scheme",
-                            action="store",
-                            help="Specify the power scheme to use. Available modes are: " +
-                                ', '.join(available_power_schemes),
-                            default="Balanced",
-                            choices=available_power_schemes)
+                               "--power-scheme",
+                               action="store",
+                               help="Specify the power scheme to use. Available modes are: " +
+                               ', '.join(available_power_schemes),
+                               choices=available_power_schemes)
         args, unknown_args = argparser.parse_known_args()
         return args, unknown_args
     except Exception as e:

@@ -74,6 +74,16 @@ def __get_available_power_schemes() -> dict[str, str]:
     except Exception as e:
         raise e
 
+def get_power_schemes() -> dict[str, str]:
+    """
+    Get all the available power schemes on your system.
+    Returns:
+        dict[str, str]: A dictionary of available power scheme names and their GUIDs.
+    """
+    try:
+        return __get_available_power_schemes()
+    except Exception as e:
+        raise e
 
 def change_power_scheme(power_scheme: str) -> int:
     """
