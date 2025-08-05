@@ -21,11 +21,10 @@ def __run_process(command: list[str]) -> int:
             command,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True,
             check=True,
             creationflags=subprocess.CREATE_NO_WINDOW
         )
-        exit_code = process.returncode
+        exit_code: int = process.returncode
         return exit_code
     except subprocess.CalledProcessError as e:
         raise e
@@ -33,5 +32,4 @@ def __run_process(command: list[str]) -> int:
         raise e
 
 def run(command: list[str]) -> int:
-    exit_code = __run_process(command)
-    return exit_code
+    return __run_process(command)
