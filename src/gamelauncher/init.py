@@ -39,7 +39,7 @@ def main():
 if __name__ == "__main__":
     CURRENT_PLATFORM: str = platform.get()
 
-    if not platform.get() == "linux":
+    if not platform.get() == "win32":
         raise RuntimeError("Your platform is not supported:", CURRENT_PLATFORM)
 
     try:
