@@ -10,7 +10,7 @@ import subprocess
 
 from gamelauncher import process, regex
 
-def __get_active_power_scheme():
+def __get_active_power_scheme() -> str:
     """
     Get the active power scheme on Windows.
     Returns:
@@ -35,9 +35,8 @@ def __get_active_power_scheme():
 
         if not match:
             raise ValueError("No active power scheme found.")
-
-        active_power_scheme[match.group(2)] = match.group(1)
-        return active_power_scheme
+        ACTIVE_POWER_SCHEME = active_power_scheme[match.group(1)] = match.group(2)
+        return ACTIVE_POWER_SCHEME
     except subprocess.CalledProcessError as e:
         raise e
 
@@ -85,6 +84,17 @@ def get_power_schemes() -> dict[str, str]:
     except Exception as e:
         raise e
 
+def get_active_power_scheme() -> str:
+    """
+    Get the active power scheme on your system.
+    Returns:
+        str: The active power scheme GUID.
+    """
+    try:
+        return __get_active_power_scheme()
+    except Exception as e:
+        raise e
+
 def change_power_scheme(power_scheme: str) -> int:
     """
     Changes the current power scheme to the specified one.
@@ -93,10 +103,10 @@ def change_power_scheme(power_scheme: str) -> int:
     """
     exit_code: int = 0
 
-    ACTIVE_POWER_SCHEME: dict[str, str] = __get_active_power_scheme()
+    ACTIVE_POWER_SCHEME: str = __get_active_power_scheme()
     AVAILABLE_POWER_SCHEMES: dict[str, str] = __get_available_power_schemes()
 
-    if power_scheme not in AVAILABLE_POWER_SCHEMES:
+    if not power_scheme in AVAILABLE_POWER_SCHEMES:
         raise ValueError(f"Power scheme '{power_scheme}' is not available.")
 
     if power_scheme in ACTIVE_POWER_SCHEME:

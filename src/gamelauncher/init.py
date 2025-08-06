@@ -20,9 +20,12 @@ def main():
         available_power_schemes: dict[str, str] = power_management.get_power_schemes()
 
         if not args.power_scheme:
-            if available_power_schemes["Ultimate performance"]:
+            if "Ultimate performance" in available_power_schemes:
                 power_management.change_power_scheme("Ultimate performance")
+            elif "High performance" in available_power_schemes:
+                power_management.change_power_scheme("High performance")
             else:
+                print("[!] No high performance power scheme was found. The Balanced power scheme will be used.")
                 power_management.change_power_scheme("Balanced")
         else:
             power_management.change_power_scheme(args.power_scheme)
