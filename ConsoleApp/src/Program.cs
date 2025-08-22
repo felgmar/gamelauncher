@@ -31,6 +31,7 @@ namespace ConsoleApp
                 break;
             }
         }
+
         private static int Main(string[] args)
         {
             PlatformID CURRENT_PLATFORM = Platform.GetCurrentPlatform();
