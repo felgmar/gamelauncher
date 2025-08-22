@@ -11,7 +11,7 @@ namespace ConsoleApp
 
         private static void ShowHelp()
         {
-            Console.WriteLine("ShowHelp()");
+            Console.WriteLine("Usage: ConsoleApp [/powerscheme <scheme>] [/run <file>]");
         }
 
         internal static void ParseArguments(string[] args)
@@ -40,11 +40,9 @@ namespace ConsoleApp
 
 #if DEBUG
             Console.WriteLine($"""
-                [DEBUG, ParseArguments()]
-                parameters.PowerScheme={PowerScheme}
-                parameters.FileName={FileName}
-                [DEBUG, ParseArguments()]
-                """);
+            [DEBUG, ParseArguments()] parameters.PowerScheme={PowerScheme}
+            [DEBUG, ParseArguments()] parameters.FileName={FileName}
+            """);
             Console.WriteLine();
 #endif
         }
