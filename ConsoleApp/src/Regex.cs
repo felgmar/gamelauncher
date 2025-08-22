@@ -29,12 +29,7 @@ namespace ConsoleApp
         {
             bool IS_GUID_VALID = Guid.TryParse(guid, out _);
 
-            if (!IS_GUID_VALID)
-            {
-                return false;
-            }
-
-            return true;
+            return IS_GUID_VALID;
         }
     }
 }
