@@ -1,12 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace ConsoleApp
 {
     internal sealed class Program
     {
-        private static void RunProcessAndRestorePowerScheme()
+        private static void Run()
         {
+            if (string.IsNullOrEmpty(Arguments.FileName))
+            {
+                Console.WriteLine("\n[ERROR] There is no program to run on!");
+                Console.WriteLine("Press the ENTER key to close this program.");
+                Console.ReadLine();
+                Environment.Exit(1);
+            }
+
             Dictionary<string, Guid> CURRENT_POWER_PLAN = PowerManagement.GetCurrentPowerPlan();
             Dictionary<string, Guid> HIGH_PERFORMANCE_PLAN = PowerManagement.GetHighPerformancePlan();
 
@@ -39,8 +47,7 @@ namespace ConsoleApp
             if (CURRENT_PLATFORM != PlatformID.Win32NT)
             {
                 string ErrorMessage = $"""
-                    Your platform {CURRENT_PLATFORM} is not supported. This program
-                    only works on {PlatformID.Win32NT}.
+                    Your platform ({CURRENT_PLATFORM}) is not supported. This program was made for {PlatformID.Win32NT} only.
                     """;
                 throw new PlatformNotSupportedException(ErrorMessage);
             }
@@ -56,7 +63,7 @@ namespace ConsoleApp
 
             try
             {
-                RunProcessAndRestorePowerScheme();
+                Run();
             }
             catch (Exception)
             {
