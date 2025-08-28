@@ -30,7 +30,7 @@ namespace ConsoleApp
             try
             {
                 process.StartInfo.FileName = FileName;
-                process.StartInfo.Arguments = !string.IsNullOrEmpty(Arguments) ? Arguments : "";
+                process.StartInfo.Arguments = !string.IsNullOrEmpty(Arguments) ? Arguments : string.Empty;
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;
                 process.Start();
