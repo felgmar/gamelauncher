@@ -16,17 +16,17 @@ namespace ConsoleApp
 
         internal static void ParseArguments(string[] args)
         {
-            foreach (string arg in args)
+            for (int index = 0; index < args.Length; index++)
             {
-                switch (arg.ToLowerInvariant())
+                switch (args[index].Trim().ToLowerInvariant())
                 {
                     case "/powerscheme":
                     case "/p":
-                        PowerScheme = args[Array.IndexOf(args, arg) + 1].ToLowerInvariant();
+                        PowerScheme = args[++index].ToLowerInvariant();
                         continue;
                     case "/run":
                     case "/r":
-                        FileName = args[Array.IndexOf(args, arg) + 1].ToLowerInvariant();
+                        FileName = args[++index].ToLowerInvariant();
                         break;
                     case "/help":
                     case "/h":
@@ -35,14 +35,14 @@ namespace ConsoleApp
                         break;
                     default:
                         ShowHelp();
-                        break;
+                        throw new ArgumentException($"Invalid argument: {args[index++].ToLowerInvariant()}");
                 }
             }
 
 #if DEBUG
             Console.WriteLine($"""
-            [DEBUG, ParseArguments()] parameters.PowerScheme={PowerScheme}
-            [DEBUG, ParseArguments()] parameters.FileName={FileName}
+            [DEBUG, Arguments.ParseArguments()] parameters.PowerScheme={PowerScheme}
+            [DEBUG, Arguments.ParseArguments()] parameters.FileName={FileName}
             """);
 #endif
         }
