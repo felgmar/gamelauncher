@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleApp
 {
-    internal class GUID
+    internal sealed class GUID
     {
         public GUID()
         {
@@ -11,7 +11,7 @@ namespace ConsoleApp
         }
     }
 
-    internal partial class RegexManager
+    internal sealed partial class RegexManager
     {
         /// <summary>
         /// Creates a regular expression to match GUIDs followed by a description in parentheses.
