@@ -5,12 +5,12 @@ using System.IO;
 
 namespace ConsoleApp
 {
-    internal class ProcessManager
+    internal sealed class ProcessManager
     {
         internal static string ProcessOutput = string.Empty;
         internal static int ExitCode = -1;
 
-        internal static void CreateProcess(string FileName, string? Arguments)
+        internal static int CreateProcess(string FileName, string? Arguments)
         {
             try
             {
@@ -30,11 +30,13 @@ namespace ConsoleApp
             try
             {
                 process.StartInfo.FileName = FileName;
-                process.StartInfo.Arguments = !string.IsNullOrEmpty(Arguments) ? Arguments : string.Empty;
+                process.StartInfo.Arguments = string.IsNullOrEmpty(Arguments) ? string.Empty : Arguments;
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;
                 process.Start();
+                process.WaitForExit();
                 ProcessOutput = process.StandardOutput.ReadToEnd();
+                ExitCode = process.ExitCode;
             }
             catch (ObjectDisposedException)
             {
@@ -66,9 +68,10 @@ namespace ConsoleApp
             }
             finally
             {
-                process.WaitForExit();
                 process.Close();
             }
+
+            return ExitCode;
         }
     }
 }
