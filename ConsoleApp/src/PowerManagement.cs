@@ -7,7 +7,7 @@ namespace ConsoleApp
 {
     internal sealed partial class PowerManagement
     {
-        private static Dictionary<string, Guid> AVAILABLE_POWER_SCHEMES = new();
+        private static readonly Dictionary<string, Guid> AVAILABLE_POWER_SCHEMES = new();
 
         private static void GetPowerSchemes()
         {
@@ -25,7 +25,7 @@ namespace ConsoleApp
                         string name = match.Groups[2].Value;
                         Guid guid = Guid.Parse(match.Groups[1].Value.Trim());
 #if DEBUG
-                        Console.WriteLine($"[DEBUG, GetPowerSchemes()]: name={name}, guid={guid}");
+                        Console.WriteLine($"[DEBUG, PowerManagement.GetPowerSchemes()] Got a power scheme: name={name}, guid={guid}");
 #endif
                         AVAILABLE_POWER_SCHEMES.Add(name, guid);
                     }
@@ -35,6 +35,24 @@ namespace ConsoleApp
             {
                 throw;
             }
+        }
+
+        private static bool IsPowerSchemeValid(Guid PowerPlanGuid)
+        {
+            string POWER_PLAN_NAME = string.Empty;
+            bool IS_POWER_PLAN_GUID_VALID = Guid.TryParse(PowerPlanGuid.ToString(), out _);
+
+            if (IS_POWER_PLAN_GUID_VALID) return true;
+
+#if DEBUG
+            string message = $"[DEBUG, PowerManagement.IsPowerSchemeValid()] IS_POWER_PLAN_GUID_VALID={IS_POWER_PLAN_GUID_VALID}," +
+                " POWER_SCHEME_GUID=" + PowerPlanGuid;
+            Console.WriteLine(message);
+#else
+            Console.WriteLine($"The power scheme {POWER_PLAN_NAME} is not valid.");
+#endif
+
+            return false;
         }
 
         internal static Dictionary<string, Guid> GetAvailablePowerSchemes()
@@ -53,96 +71,130 @@ namespace ConsoleApp
 
             return AVAILABLE_POWER_SCHEMES;
         }
-
-        internal static bool IsPowerSchemeValid(string PowerSchemeName, Guid PowerSchemeGuid)
+        internal static Guid GetActivePowerPlan()
         {
-            bool IS_POWER_SCHEME_GUID_VALID = Guid.TryParse(PowerSchemeGuid.ToString(), out _);
-
-            if (!IS_POWER_SCHEME_GUID_VALID)
-            {
-                Console.WriteLine($"The power scheme {PowerSchemeName} is not valid.");
-                return false;
-            }
-
-            return true;
-        }
-
-        internal static Dictionary<string, Guid> GetCurrentPowerPlan()
-        {
-            Dictionary<string, Guid> CURRENT_POWER_PLAN = new();
+            string ACTIVE_POWER_PLAN_NAME = string.Empty;
+            Guid ACTIVE_POWER_PLAN_GUID = Guid.Empty;
 
             ProcessManager.CreateProcess("powercfg.exe", "/getactivescheme");
 
             Match match = Regex.Match(ProcessManager.ProcessOutput,
                                       RegexManager.GetGUIDPattern().ToString());
 
-            GetAvailablePowerSchemes();
-
-            if (match.Success)
+            if (!match.Success)
             {
-                foreach (KeyValuePair<string, Guid> POWER_PLAN in AVAILABLE_POWER_SCHEMES)
-                {
-                    if (POWER_PLAN.Key == match.Groups[2].Value)
-                    {
-#if DEBUG
-                        string ErrorMessage = $"[DEBUG, GetCurrentPowerPlan()] name={POWER_PLAN.Key}, guid={POWER_PLAN.Value}.";
-                        Console.WriteLine(ErrorMessage);
-#endif
-                        if (CURRENT_POWER_PLAN.Count != 0) CURRENT_POWER_PLAN.Clear();
-                        CURRENT_POWER_PLAN.Add(POWER_PLAN.Key, POWER_PLAN.Value);
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                throw new Exception("Could not retrieve the current power plan GUID.");
+                throw new InvalidDataException("Could not retrieve the current power plan GUID.");
             }
 
-            return CURRENT_POWER_PLAN;
-        }
-
-        internal static Dictionary<string, Guid> GetHighPerformancePlan()
-        {
-            Dictionary<string, Guid> HIGH_PERFORMANCE_POWER_PLAN = new();
-            Dictionary<string, Guid> AVAILABLE_POWER_PLANS = GetAvailablePowerSchemes();
-
-            foreach (KeyValuePair<string, Guid> POWER_PLAN in AVAILABLE_POWER_PLANS)
+            try
             {
-                if (POWER_PLAN.Key == "High performance" ||
-                    POWER_PLAN.Key == "Ultimate performance")
+                GetAvailablePowerSchemes();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            foreach (KeyValuePair<string, Guid> POWER_PLAN in AVAILABLE_POWER_SCHEMES)
+            {
+                if (POWER_PLAN.Key == match.Groups[2].Value)
                 {
 #if DEBUG
-                    Console.WriteLine($"[DEBUG, GetHighPerformancePlan()] Power scheme GUID is {POWER_PLAN.Value}");
+                    string ErrorMessage = $"[DEBUG, PowerManagement.GetActivePowerPlan()] Got active power plan: name={POWER_PLAN.Key}, guid={POWER_PLAN.Value}.";
+                    Console.WriteLine(ErrorMessage);
 #endif
-                    HIGH_PERFORMANCE_POWER_PLAN.Add(POWER_PLAN.Key, POWER_PLAN.Value);
+                    ACTIVE_POWER_PLAN_NAME = POWER_PLAN.Key;
+                    ACTIVE_POWER_PLAN_GUID = POWER_PLAN.Value;
                     break;
                 }
             }
 
-            return HIGH_PERFORMANCE_POWER_PLAN;
+            return ACTIVE_POWER_PLAN_GUID;
         }
 
-        internal static int SetPowerPlan(string PowerSchemeName, Guid PowerSchemeGuid)
+        internal static Guid GetPowerPlan(string PowerPlanName)
         {
+            Guid POWER_PLAN_GUID = Guid.Empty;
+
+            foreach (KeyValuePair<string, Guid> POWER_PLAN in AVAILABLE_POWER_SCHEMES)
+            {
+                if (PowerPlanName == POWER_PLAN.Key)
+                {
+#if DEBUG
+                    Console.WriteLine($"[DEBUG, PowerManagement.GetPowerPlan()] Power plan received: name={POWER_PLAN.Key} guid={POWER_PLAN.Value}");
+#endif
+                    POWER_PLAN_GUID = POWER_PLAN.Value;
+                    break;
+                }
+            }
+
+            return POWER_PLAN_GUID;
+        }
+
+        internal static int SetPowerPlan(Guid PowerSchemeGuid)
+        {
+            string POWER_PLAN_NAME = string.Empty;
+
+            foreach (KeyValuePair<string, Guid> POWER_SCHEME in AVAILABLE_POWER_SCHEMES)
+            {
+                if (POWER_SCHEME.Value == PowerSchemeGuid)
+                {
+                    POWER_PLAN_NAME = POWER_SCHEME.Key;
+#if DEBUG
+                    Console.WriteLine($"[DEBUG, PowerManagement.SetPowerPlan()] " + "Found a match for " + PowerSchemeGuid + ". POWER_SCHEME.Key=" +
+                        POWER_SCHEME.Key);
+#endif
+                    break;
+                }
+
+#if DEBUG
+                Console.WriteLine($"[DEBUG, PowerManagement.SetPowerPlan()] " + "POWER_SCHEME.Value=" +
+                        POWER_SCHEME.Value + " no match for " + PowerSchemeGuid + ". Retrying...");
+#else
+                    Console.WriteLine($"The power scheme" +
+                        POWER_SCHEME.Value + " does not match GUID " + PowerSchemeGuid + ". Retrying...");
+#endif
+            }
+
+#if DEBUG
+            string message = $"[DEBUG, PowerManagement.SetPowerPlan()] IS_POWER_SCHEME_GUID_VALID=" +
+                IsPowerSchemeValid(PowerSchemeGuid) + " POWER_PLAN_NAME=" + POWER_PLAN_NAME;
+
+            Console.WriteLine(message);
+                    
+#else
+            Console.WriteLine($"The power plan {PowerSchemeGuid} is valid.");
+#endif
+
             try
             {
-                bool IS_POWER_SCHEME_GUID_VALID = Guid.TryParse(PowerSchemeGuid.ToString(), out _);
-
-                if (!IS_POWER_SCHEME_GUID_VALID)
+                if (IsPowerSchemeValid(PowerSchemeGuid))
                 {
-                    throw new InvalidDataException($"The GUID {PowerSchemeGuid} is not valid.");
+                    ProcessManager.CreateProcess("powercfg.exe", $"/setactive {PowerSchemeGuid}");
                 }
+                else
+                {
 #if DEBUG
-                Console.WriteLine($"[DEBUG, SetPowerPlan()] Power scheme set to {PowerSchemeName}");
+                    Console.WriteLine($"[DEBUG, PowerManagement.SetPowerPlan()] PowerSchemeGuid={PowerSchemeGuid}," +
+                        " IsPowerSchemeValid=sPowerSchemeValid=" + IsPowerSchemeValid(PowerSchemeGuid));
+#else
+                    throw new InvalidDataException($"The power plan {POWER_PLAN_NAME} is not valid");
 #endif
-                ProcessManager.CreateProcess("powercfg.exe", $"/setactive {PowerSchemeGuid}");
+                }
             }
             catch (Exception)
             {
                 throw;
             }
-
+            finally
+            {
+#if DEBUG
+                Console.WriteLine($"[DEBUG, PowerManagement.SetPowerPlan()] Changed power plan. POWER_PLAN={POWER_PLAN_NAME}");
+#else
+                Console.WriteLine("Power plan was set to " + POWER_PLAN_NAME);
+#endif
+            }
             return ProcessManager.ExitCode;
         }
     }
