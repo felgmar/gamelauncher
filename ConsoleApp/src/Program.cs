@@ -1,27 +1,33 @@
 using System;
-using System.Collections.Generic;
+using System.Runtime.Versioning;
 
 namespace ConsoleApp
 {
     internal sealed class Program
     {
+        [SupportedOSPlatform("windows")]
         private static void Run()
         {
+#if RELEASE
             if (string.IsNullOrEmpty(Arguments.FileName))
             {
                 Console.WriteLine("\n[ERROR] There is no program to run on!");
                 Console.WriteLine("Press the ENTER key to close this program.");
                 Console.ReadLine();
                 Environment.Exit(1);
-            }
+#endif
 
-            Dictionary<string, Guid> CURRENT_POWER_PLAN = PowerManagement.GetCurrentPowerPlan();
-            Dictionary<string, Guid> HIGH_PERFORMANCE_PLAN = PowerManagement.GetHighPerformancePlan();
+            Guid PREVIOUS_POWER_PLAN = PowerManagement.GetActivePowerPlan();
+            Guid BALANCED_POWER_PLAN = PowerManagement.GetPowerPlan("Balanced");
+            Guid HIGH_PERFORMANCE_PLAN = PowerManagement.GetPowerPlan("High performance");
 
-            foreach (KeyValuePair<string, Guid> POWER_PLAN in HIGH_PERFORMANCE_PLAN)
+            try
             {
-                PowerManagement.SetPowerPlan(POWER_PLAN.Key, POWER_PLAN.Value);
-                break;
+                PowerManagement.SetPowerPlan(HIGH_PERFORMANCE_PLAN);
+            }
+            catch (Exception)
+            {
+                throw;
             }
 
             try
@@ -33,23 +39,31 @@ namespace ConsoleApp
                 throw;
             }
 
-            foreach (KeyValuePair<string, Guid> POWER_PLAN in CURRENT_POWER_PLAN)
+            if (PREVIOUS_POWER_PLAN == BALANCED_POWER_PLAN)
             {
-                PowerManagement.SetPowerPlan(POWER_PLAN.Key, POWER_PLAN.Value);
-                break;
+                PowerManagement.SetPowerPlan(PREVIOUS_POWER_PLAN);
+            }
+            else
+            {
+#if DEBUG
+                Console.WriteLine($"[DEBUG, Program.Run()] PREVIOUS_POWER_PLAN=" +
+                    PREVIOUS_POWER_PLAN + " was not " + BALANCED_POWER_PLAN +
+                    " reverted back to Balanced.");
+#endif
+                PowerManagement.SetPowerPlan(BALANCED_POWER_PLAN);
             }
         }
 
+        [SupportedOSPlatform("windows")]
         private static int Main(string[] args)
         {
-            PlatformID CURRENT_PLATFORM = Platform.GetCurrentPlatform();
-
-            if (CURRENT_PLATFORM != PlatformID.Win32NT)
+            try
             {
-                string ErrorMessage = $"""
-                    Your platform ({CURRENT_PLATFORM}) is not supported. This program was made for {PlatformID.Win32NT} only.
-                    """;
-                throw new PlatformNotSupportedException(ErrorMessage);
+                Platform.IsPlatformValid();
+            }
+            catch (Exception)
+            {
+                throw;
             }
 
             try
@@ -69,9 +83,7 @@ namespace ConsoleApp
             {
                 throw;
             }
-#if DEBUG
-            Console.WriteLine($"[DEBUG, Main()] Current platform: {CURRENT_PLATFORM}");
-#endif
+
             return 0;
         }
     }
