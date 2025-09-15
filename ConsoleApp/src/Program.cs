@@ -8,9 +8,9 @@ namespace ConsoleApp
         [SupportedOSPlatform("windows")]
         private static void Run()
         {
-#if RELEASE
             if (string.IsNullOrEmpty(Arguments.FileName))
             {
+#if RELEASE
                 Console.WriteLine("\n[ERROR] There is no program to run on!");
                 Console.WriteLine("Press the ENTER key to close this program.");
                 Console.ReadLine();
