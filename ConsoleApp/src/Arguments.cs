@@ -11,7 +11,7 @@ namespace ConsoleApp
 
         private static void ShowHelp()
         {
-            Console.WriteLine($"Usage: {ProgramInfo.GetName()} [/powerscheme <scheme>] [/run <file>]");
+            Console.WriteLine("Usage: {0} [/powerscheme <scheme>] [/run <file>]", ProgramInfo.GetName());
         }
 
         internal static void ParseArguments(string[] args)

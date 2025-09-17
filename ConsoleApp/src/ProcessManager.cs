@@ -12,18 +12,7 @@ namespace ConsoleApp
 
         internal static int CreateProcess(string FileName, string? Arguments)
         {
-            try
-            {
-                ArgumentException.ThrowIfNullOrEmpty(FileName);
-            }
-            catch (ArgumentNullException)
-            {
-                throw;
-            }
-            catch (ArgumentException)
-            {
-                throw;
-            }
+            ArgumentException.ThrowIfNullOrEmpty(FileName, nameof(FileName));
 
             Process process = new();
 

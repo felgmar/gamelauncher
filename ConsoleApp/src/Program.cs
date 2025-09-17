@@ -25,18 +25,20 @@ namespace ConsoleApp
                 {
                     PowerManagement.SetPowerPlan(HIGH_PERFORMANCE_PLAN);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw;
+                    Console.WriteLine("\n[ERROR] " + ex.Message);
+                    Environment.Exit(1);
                 }
 
                 try
                 {
                     ProcessManager.CreateProcess(Arguments.FileName, null);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw;
+                    Console.WriteLine("\n[ERROR] " + ex.Message);
+                    Environment.Exit(1);
                 }
 
                 if (PREVIOUS_POWER_PLAN == BALANCED_POWER_PLAN)
@@ -62,27 +64,30 @@ namespace ConsoleApp
             {
                 Platform.IsPlatformValid();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Console.WriteLine("\n[ERROR] " + ex.Message);
+                Environment.Exit(1);
             }
 
             try
             {
                 Arguments.ParseArguments(args);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Console.WriteLine("\n[ERROR] " + ex.Message);
+                Environment.Exit(1);
             }
 
             try
             {
                 Run();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Console.WriteLine("\n[ERROR] " + ex.Message);
+                Environment.Exit(1);
             }
 
             return 0;
