@@ -1,3 +1,4 @@
+using Gamelauncher.Core;
 using System;
 using System.Runtime.Versioning;
 
@@ -15,45 +16,48 @@ namespace ConsoleApp
                 Console.WriteLine("Press the ENTER key to close this program.");
                 Console.ReadLine();
                 Environment.Exit(1);
+#elif DEBUG
+                Console.WriteLine($"\n[DEBUG] Arguments.FileName={Arguments.FileName}");
+                Environment.Exit(1);
 #endif
+            }
 
-                Guid PREVIOUS_POWER_PLAN = PowerManagement.GetActivePowerPlan();
-                Guid BALANCED_POWER_PLAN = PowerManagement.GetPowerPlan("Balanced");
-                Guid HIGH_PERFORMANCE_PLAN = PowerManagement.GetPowerPlan("High performance");
+            Guid PREVIOUS_POWER_PLAN = PowerManagement.GetActivePowerPlan();
+            Guid BALANCED_POWER_PLAN = PowerManagement.GetPowerPlan("Balanced");
+            Guid HIGH_PERFORMANCE_PLAN = PowerManagement.GetPowerPlan("High performance");
 
-                try
-                {
-                    PowerManagement.SetPowerPlan(HIGH_PERFORMANCE_PLAN);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("\n[ERROR] " + ex.Message);
-                    Environment.Exit(1);
-                }
+            try
+            {
+                PowerManagement.SetPowerPlan(HIGH_PERFORMANCE_PLAN);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n[ERROR] " + ex.Message);
+                Environment.Exit(1);
+            }
 
-                try
-                {
-                    ProcessManager.CreateProcess(Arguments.FileName, null);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("\n[ERROR] " + ex.Message);
-                    Environment.Exit(1);
-                }
+            try
+            {
+                ProcessManager.CreateProcess(Arguments.FileName, null);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n[ERROR] " + ex.Message);
+                Environment.Exit(1);
+            }
 
-                if (PREVIOUS_POWER_PLAN == BALANCED_POWER_PLAN)
-                {
-                    PowerManagement.SetPowerPlan(PREVIOUS_POWER_PLAN);
-                }
-                else
-                {
+            if (PREVIOUS_POWER_PLAN == BALANCED_POWER_PLAN)
+            {
+                PowerManagement.SetPowerPlan(PREVIOUS_POWER_PLAN);
+            }
+            else
+            {
 #if DEBUG
-                Console.WriteLine($"[DEBUG, Program.Run()] PREVIOUS_POWER_PLAN=" +
-                    PREVIOUS_POWER_PLAN + " was not " + BALANCED_POWER_PLAN +
-                    " reverted back to Balanced.");
+            Console.WriteLine($"[DEBUG, Program.Run()] PREVIOUS_POWER_PLAN=" +
+                PREVIOUS_POWER_PLAN + " was not " + BALANCED_POWER_PLAN +
+                " reverted back to Balanced.");
 #endif
-                    PowerManagement.SetPowerPlan(BALANCED_POWER_PLAN);
-                }
+                PowerManagement.SetPowerPlan(BALANCED_POWER_PLAN);
             }
         }
 
@@ -62,7 +66,7 @@ namespace ConsoleApp
         {
             try
             {
-                Platform.IsPlatformValid();
+                Platform.IsPlatformCompatible();
             }
             catch (Exception ex)
             {
