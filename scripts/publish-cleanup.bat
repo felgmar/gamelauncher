@@ -2,7 +2,7 @@
 
 CALL %~dp0cleanup.bat
 
-dotnet publish "gamelauncher.sln" --nologo --self-contained --property:OutputPath=%~dp0..\build\ --configuration "Release"
+dotnet publish "gamelauncher.sln" --nologo --self-contained --property:OutputPath=%~dp0..\build\ --configuration "Release" -r win-x64
 
 MOVE /Y %~dp0..\build\publish %~dp0..\
 RMDIR /Q /S %~dp0..\build
