@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>A simple gamelauncher made for Windows.</Description>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <StartupObject>ConsoleApp.Program</StartupObject>
@@ -41,13 +41,13 @@
 
   <ItemGroup>
     <None Include="..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
+    <Pack>True</Pack>
+    <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+    <ProjectReference Include="..\Gamelauncher.Core\Gamelauncher.Core.csproj" />
   </ItemGroup>
 
 </Project>
