@@ -5,6 +5,8 @@ CALL :REMOVEDIR %~dp0..\build
 CALL :REMOVEDIR %~dp0..\build-installer
 CALL :REMOVEDIR %~dp0..\ConsoleApp\bin
 CALL :REMOVEDIR %~dp0..\ConsoleApp\obj
+CALL :REMOVEDIR %~dp0..\Gamelauncher.Core\bin
+CALL :REMOVEDIR %~dp0..\Gamelauncher.Core\obj
 
 :EXITWITHERROR
 IF %ERRORLEVEL%==0 (
