@@ -32,8 +32,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\n[ERROR] " + ex.Message);
-                Environment.Exit(1);
+                ErrorHandler.WaitAndExit(ex);
             }
 
             try
@@ -42,8 +41,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\n[ERROR] " + ex.Message);
-                Environment.Exit(1);
+                ErrorHandler.WaitAndExit(ex);
             }
 
             if (PREVIOUS_POWER_PLAN == BALANCED_POWER_PLAN)
@@ -70,8 +68,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\n[ERROR] " + ex.Message);
-                Environment.Exit(1);
+                ErrorHandler.WaitAndExit(ex);
             }
 
             try
@@ -80,8 +77,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\n[ERROR] " + ex.Message);
-                Environment.Exit(1);
+                ErrorHandler.WaitAndExit(ex);
             }
 
             try
@@ -90,8 +86,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\n[ERROR] " + ex.Message);
-                Environment.Exit(1);
+                ErrorHandler.WaitAndExit(ex);
             }
 
             return 0;
