@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace ConsoleApp
+namespace Gamelauncher.Core
 {
     internal sealed class GUID
     {

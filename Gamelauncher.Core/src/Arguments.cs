@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Runtime.Versioning;
 
-namespace ConsoleApp
+namespace Gamelauncher.Core
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class Arguments
+    public sealed class Arguments
     {
-        internal static string PowerScheme { get; private set; } = string.Empty;
-        internal static string FileName { get; private set; } = string.Empty;
+        public static string PowerScheme { get; private set; } = string.Empty;
+        public static string FileName { get; private set; } = string.Empty;
 
         private static void ShowHelp()
         {
             Console.WriteLine("Usage: {0} [/powerscheme <scheme>] [/run <file>]", ProgramInfo.GetName());
         }
 
-        internal static void ParseArguments(string[] args)
+        public static void ParseArguments(string[] args)
         {
             for (int index = 0; index < args.Length; index++)
             {
@@ -31,6 +31,7 @@ namespace ConsoleApp
                     case "/help":
                     case "/h":
                     case "/?":
+                        Console.WriteLine($"Unknown argument: {args[++index].ToLowerInvariant()}");
                         ShowHelp();
                         break;
                     default:

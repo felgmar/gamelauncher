@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{31DA0436-9078-4A93-AD75-CC852D98A2E2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{38F75CDD-8E26-461E-B787-DE2C0C13B26B} = {38F75CDD-8E26-461E-B787-DE2C0C13B26B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamelauncher.Core", "Gamelauncher.Core\Gamelauncher.Core.csproj", "{38F75CDD-8E26-461E-B787-DE2C0C13B26B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{31DA0436-9078-4A93-AD75-CC852D98A2E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31DA0436-9078-4A93-AD75-CC852D98A2E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31DA0436-9078-4A93-AD75-CC852D98A2E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38F75CDD-8E26-461E-B787-DE2C0C13B26B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38F75CDD-8E26-461E-B787-DE2C0C13B26B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F75CDD-8E26-461E-B787-DE2C0C13B26B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F75CDD-8E26-461E-B787-DE2C0C13B26B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

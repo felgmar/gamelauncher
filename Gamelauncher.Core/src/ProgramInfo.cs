@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.Versioning;
 
-namespace ConsoleApp
+namespace Gamelauncher.Core
 {
     [SupportedOSPlatform("windows")]
     internal static class ProgramInfo

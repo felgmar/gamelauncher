@@ -3,14 +3,14 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 
-namespace ConsoleApp
+namespace Gamelauncher.Core
 {
-    internal sealed class ProcessManager
+    public sealed class ProcessManager
     {
         internal static string ProcessOutput = string.Empty;
         internal static int ExitCode = -1;
 
-        internal static int CreateProcess(string FileName, string? Arguments)
+        public static int CreateProcess(string FileName, string? Arguments)
         {
             ArgumentException.ThrowIfNullOrEmpty(FileName, nameof(FileName));
 

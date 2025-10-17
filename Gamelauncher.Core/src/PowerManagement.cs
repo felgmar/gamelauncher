@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace ConsoleApp
+namespace Gamelauncher.Core
 {
-    internal sealed partial class PowerManagement
+    public sealed partial class PowerManagement
     {
         private static readonly Dictionary<string, Guid> AVAILABLE_POWER_SCHEMES = new();
 
@@ -71,7 +71,7 @@ namespace ConsoleApp
 
             return AVAILABLE_POWER_SCHEMES;
         }
-        internal static Guid GetActivePowerPlan()
+        public static Guid GetActivePowerPlan()
         {
             string ACTIVE_POWER_PLAN_NAME = string.Empty;
             Guid ACTIVE_POWER_PLAN_GUID = Guid.Empty;
@@ -113,7 +113,7 @@ namespace ConsoleApp
             return ACTIVE_POWER_PLAN_GUID;
         }
 
-        internal static Guid GetPowerPlan(string PowerPlanName)
+        public static Guid GetPowerPlan(string PowerPlanName)
         {
             Guid POWER_PLAN_GUID = Guid.Empty;
 
@@ -122,7 +122,7 @@ namespace ConsoleApp
                 if (PowerPlanName == POWER_PLAN.Key)
                 {
 #if DEBUG
-                    Console.WriteLine($"[DEBUG, PowerManagement.GetPowerPlan()] Power plan received: name={POWER_PLAN.Key} guid={POWER_PLAN.Value}");
+                    Console.WriteLine($"[DEBUG, PowerManagement.GetPowerPlan()] Power plan received: name={POWER_PLAN.Key}, guid={POWER_PLAN.Value}");
 #endif
                     POWER_PLAN_GUID = POWER_PLAN.Value;
                     break;
@@ -132,7 +132,7 @@ namespace ConsoleApp
             return POWER_PLAN_GUID;
         }
 
-        internal static int SetPowerPlan(Guid PowerSchemeGuid)
+        public static int SetPowerPlan(Guid PowerSchemeGuid)
         {
             string POWER_PLAN_NAME = string.Empty;
 
