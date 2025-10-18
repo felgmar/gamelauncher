@@ -2,7 +2,7 @@
 
 namespace ConsoleApp
 {
-    internal class ErrorHandler
+    internal sealed class ErrorHandler
     {
         internal static void WaitAndExit(Exception exception)
         {
