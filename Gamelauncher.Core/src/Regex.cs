@@ -3,14 +3,12 @@ using System.Text.RegularExpressions;
 
 namespace Gamelauncher.Core
 {
-    internal sealed class GUID
-    {
-        public GUID()
-        {
-            RegexManager.GetGUIDPattern();
-        }
-    }
-
+    /// <summary>
+    /// Provides functionality for working with regular expressions related to GUIDs and their associated descriptions.
+    /// </summary>
+    /// <remarks>This class includes methods to retrieve a pre-defined regular expression for matching GUIDs
+    /// followed by descriptions and to validate the format of a given GUID string. It is designed for internal use and
+    /// is not intended for external consumption.</remarks>
     internal sealed partial class RegexManager
     {
         /// <summary>
@@ -30,6 +28,19 @@ namespace Gamelauncher.Core
             bool IS_GUID_VALID = Guid.TryParse(guid, out _);
 
             return IS_GUID_VALID;
+        }
+    }
+
+    /// <summary>
+    /// Represents a globally unique identifier (GUID).
+    /// </summary>
+    /// <remarks>This class provides functionality related to GUIDs. It initializes the GUID pattern using the
+    /// <see cref="RegexManager.GetGUIDPattern"/> method.</remarks>
+    internal sealed class GUID
+    {
+        public GUID()
+        {
+            RegexManager.GetGUIDPattern();
         }
     }
 }
