@@ -17,7 +17,7 @@ namespace ConsoleApp
                 Console.ReadLine();
                 Environment.Exit(1);
 #elif DEBUG
-                Console.WriteLine($"\n[DEBUG] Arguments.FileName={Arguments.FileName}");
+                Console.WriteLine($"\n[DEBUG] Arguments.FileName is empty or null.");
                 Environment.Exit(1);
 #endif
             }
@@ -51,11 +51,12 @@ namespace ConsoleApp
             else
             {
 #if DEBUG
-            Console.WriteLine($"[DEBUG, Program.Run()] PREVIOUS_POWER_PLAN=" +
-                PREVIOUS_POWER_PLAN + " was not " + BALANCED_POWER_PLAN +
+            PowerManagement.SetPowerPlan(BALANCED_POWER_PLAN);
+            Console.WriteLine($"[DEBUG, Program.Run()]" +
+                $"PREVIOUS_POWER_PLAN={PREVIOUS_POWER_PLAN}" +
+                " was not {BALANCED_POWER_PLAN}" +
                 " reverted back to Balanced.");
 #endif
-                PowerManagement.SetPowerPlan(BALANCED_POWER_PLAN);
             }
         }
 
