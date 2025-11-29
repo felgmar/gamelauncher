@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>A simple gamelauncher made for Windows.</Description>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <StartupObject>ConsoleApp.Program</StartupObject>
