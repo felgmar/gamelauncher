@@ -3,14 +3,12 @@
 	<PropertyGroup>
 		<Description>A simple gamelauncher made for Windows.</Description>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net9.0-windows</TargetFramework>
+		<TargetFramework>net10.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<PublishTrimmed>True</PublishTrimmed>
 		<LangVersion>latest</LangVersion>
 		<NeutralLanguage>en-US</NeutralLanguage>
-		<AssemblyName>Gamelauncher.Core</AssemblyName>
 		<Authors>Felipe González Martín</Authors>
-		<Version>1.0.1.0</Version>
 		<AssemblyVersion>$(Version)</AssemblyVersion>
 		<FileVersion>$(Version)</FileVersion>
 		<AssemblyVersion>$(AssemblyVersion)</AssemblyVersion>
@@ -29,12 +27,14 @@
 		<DebugType>embedded</DebugType>
 		<WarningLevel>9999</WarningLevel>
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+		<IsAotCompatible>True</IsAotCompatible>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DebugType>none</DebugType>
 		<WarningLevel>1</WarningLevel>
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+		<IsAotCompatible>True</IsAotCompatible>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -42,10 +42,6 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 	</ItemGroup>
 
 </Project>
