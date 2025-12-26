@@ -19,13 +19,10 @@
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
-		<VersionPrefix>debug</VersionPrefix>
-	</PropertyGroup>
-
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DebugType>embedded</DebugType>
 		<WarningLevel>9999</WarningLevel>
+		<VersionSuffix>debug</VersionSuffix>
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
 		<IsAotCompatible>True</IsAotCompatible>
 	</PropertyGroup>
